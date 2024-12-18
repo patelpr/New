@@ -8,6 +8,10 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+@app.route('/', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'healthy'}), 200
+
 @app.route('/webhook/zendesk', methods=['POST'])
 def zendesk_webhook():
     try:
@@ -35,4 +39,4 @@ def zendesk_webhook():
         }), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
