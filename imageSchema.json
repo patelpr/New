@@ -1,0 +1,130 @@
+[
+  {
+    "Address": null,
+    "Barcode": "pptestbp1323",
+    "ClaimUrl": "https://www.mybpsphotos.com/album/claimalbum?id=10959751&key=f2c03d8891d242099f4a5e89eb6e9f78&PK=e551ff53-b772-4ae6-9b6b-12aa2ab37ea1",
+    "CreateDate": "2023-11-08T18:52:49.673",
+    "Email": "ppatel@pictureu.com",
+    "FirstName": "",
+    "LastName": "",
+    "OptIn1": true,
+    "PartnerID": 9013,
+    "PhotoSubjectID": 10354919,
+    "Pictures": [
+      {
+        "CreateDate": "2023-11-08T18:52:51.447",
+        "Description": "000",
+        "GroupKey": "f2c03d8891d242099f4a5e89eb6e9f78",
+        "OriginalHeight": 0,
+        "OriginalURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11275898&key=pptestbp132330a2c48fd9024f4db312e6d5d8664ebf&size=o&region=en-US&q=High&sec=62f3474063bd7779b394160d9272d86c&ts=638350663820600000&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "OriginalWidth": 0,
+        "PictureKey": "pptestbp132330a2c48fd9024f4db312e6d5d8664ebf",
+        "ScreenHeight": 0,
+        "ScreenURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11275898&key=pptestbp132330a2c48fd9024f4db312e6d5d8664ebf&size=m&region=en-US&q=High&ts=638350663820600000&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ScreenWidth": 0,
+        "ThumbnailHeight": 0,
+        "ThumbnailURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11275898&key=pptestbp132330a2c48fd9024f4db312e6d5d8664ebf&size=s&region=en-US&q=High&ts=638350663820600000&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ThumbnailWidth": 0
+      }
+    ],
+    "SittingIdentifier": "pptestbp1323",
+    "SittingPassword": "pptestbp1323",
+    "UniqueKey": null
+  },
+  {
+    "Address": null,
+    "Barcode": "763828357596",
+    "ClaimUrl": "https://www.mybpsphotos.com/album/claimalbum?id=10954296&key=04487cd3a959480da2b030fa78544701&PK=e551ff53-b772-4ae6-9b6b-12aa2ab37ea1",
+    "CreateDate": "2023-11-07T19:00:12.583",
+    "Email": "PPATEL@PICTUREU.COM",
+    "FirstName": "",
+    "LastName": "",
+    "OptIn1": true,
+    "PartnerID": 9013,
+    "PhotoSubjectID": 10351372,
+    "Pictures": [
+      {
+        "CreateDate": "2023-11-07T19:00:14.097",
+        "Description": "000",
+        "GroupKey": "04487cd3a959480da2b030fa78544701",
+        "OriginalHeight": 0,
+        "OriginalURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11270443&key=7638283575964975f8cc70c14f91b95a6a07f1be56da&size=o&region=en-US&q=High&sec=6439a097f2649fe8a44a48802d9f4fa1&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "OriginalWidth": 0,
+        "PictureKey": "7638283575964975f8cc70c14f91b95a6a07f1be56da",
+        "ScreenHeight": 0,
+        "ScreenURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11270443&key=7638283575964975f8cc70c14f91b95a6a07f1be56da&size=m&region=en-US&q=High&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ScreenWidth": 0,
+        "ThumbnailHeight": 0,
+        "ThumbnailURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11270443&key=7638283575964975f8cc70c14f91b95a6a07f1be56da&size=s&region=en-US&q=High&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ThumbnailWidth": 0
+      }
+    ],
+    "SittingIdentifier": "763828357596",
+    "SittingPassword": "763828357596",
+    "UniqueKey": null
+  },
+  {
+    "Address": null,
+    "Barcode": "641547166486",
+    "ClaimUrl": "https://www.mybpsphotos.com/album/claimalbum?id=11205373&key=d60038fb58a14a5cabe7c6d89a28edba&PK=e551ff53-b772-4ae6-9b6b-12aa2ab37ea1",
+    "CreateDate": "2023-11-19T13:39:17.7",
+    "Email": "ppatel@pictureu.com",
+    "FirstName": "",
+    "LastName": "",
+    "OptIn1": true,
+    "PartnerID": 9013,
+    "PhotoSubjectID": 10508318,
+    "Pictures": [
+      {
+        "CreateDate": "2023-11-19T13:39:19.143",
+        "Description": "000",
+        "GroupKey": "d60038fb58a14a5cabe7c6d89a28edba",
+        "OriginalHeight": 0,
+        "OriginalURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11521701&key=6415471664864ca42543a3424fdf8d7c848c2d177267&size=o&region=en-US&q=High&sec=e72bbe03153090a1c093eb7a224eae02&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "OriginalWidth": 0,
+        "PictureKey": "6415471664864ca42543a3424fdf8d7c848c2d177267",
+        "ScreenHeight": 0,
+        "ScreenURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11521701&key=6415471664864ca42543a3424fdf8d7c848c2d177267&size=m&region=en-US&q=High&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ScreenWidth": 0,
+        "ThumbnailHeight": 0,
+        "ThumbnailURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11521701&key=6415471664864ca42543a3424fdf8d7c848c2d177267&size=s&region=en-US&q=High&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ThumbnailWidth": 0
+      }
+    ],
+    "SittingIdentifier": "641547166486",
+    "SittingPassword": "641547166486",
+    "UniqueKey": null
+  },
+  {
+    "Address": null,
+    "Barcode": "641546396835",
+    "ClaimUrl": "https://www.mybpsphotos.com/album/claimalbum?id=11206188&key=fa9d686f8f9444efafe210c3736a4fe6&PK=e551ff53-b772-4ae6-9b6b-12aa2ab37ea1",
+    "CreateDate": "2023-11-19T13:48:27.723",
+    "Email": "ppatel@pictureu.COM",
+    "FirstName": "",
+    "LastName": "",
+    "OptIn1": true,
+    "PartnerID": 9013,
+    "PhotoSubjectID": 10508838,
+    "Pictures": [
+      {
+        "CreateDate": "2023-11-19T13:48:36.56",
+        "Description": "000",
+        "GroupKey": "fa9d686f8f9444efafe210c3736a4fe6",
+        "OriginalHeight": 0,
+        "OriginalURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11522526&key=64154639683592dda6916a6d4cbc8ea86f81e6835d97&size=o&region=en-US&q=High&sec=115a0589572647daebc1d77962523f21&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "OriginalWidth": 0,
+        "PictureKey": "64154639683592dda6916a6d4cbc8ea86f81e6835d97",
+        "ScreenHeight": 0,
+        "ScreenURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11522526&key=64154639683592dda6916a6d4cbc8ea86f81e6835d97&size=m&region=en-US&q=High&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ScreenWidth": 0,
+        "ThumbnailHeight": 0,
+        "ThumbnailURL": "https://www.mybpsphotos.com/Imaging/GetImage.ashx?id=11522526&key=64154639683592dda6916a6d4cbc8ea86f81e6835d97&size=s&region=en-US&q=High&ts=0&PK=4a25bd2c-19c0-4d35-bf07-68ba502f4895",
+        "ThumbnailWidth": 0
+      }
+    ],
+    "SittingIdentifier": "641546396835",
+    "SittingPassword": "641546396835",
+    "UniqueKey": null
+  }
+]
