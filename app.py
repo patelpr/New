@@ -7,6 +7,7 @@ import aiohttp
 import urllib.parse
 from functools import wraps
 from store_mappings import get_store_id_from_zendesk 
+import asyncio
 
 app = Flask(__name__)
 
@@ -169,6 +170,81 @@ async def get_by_secure_code(store, securecode):
         logger.error(f"Failed to get photos by secure code: {str(e)}")
         raise
 
+async def get_by_email(store, email):
+    """Search for photos using store and secure code"""
+    try:
+        token = await token_manager.get_valid_token()
+        search_url = f"https://www.mybpsphotos.com/api/picturearchive/v1/photosubjects/{store}/search"
+        params = {"email": email}
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.get(search_url, headers=headers, params=params) as response:
+                response.raise_for_status()
+                photo_data = await response.json()
+                return photo_data
+                
+    except Exception as e:
+        logger.error(f"Failed to get photos by secure code: {str(e)}")
+        raise
+
+async def get_photos(store, securecode=None, email=None):
+    """Search for photos using store and either secure code or email or both"""
+    unique_photos = {}  # Using dict to track unique photos by SittingIdentifier
+    
+    try:
+        token = await token_manager.get_valid_token()
+        search_url = f"https://www.mybpsphotos.com/api/picturearchive/v1/photosubjects/{store}/search"
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        
+        # Create tasks for both searches
+        async with aiohttp.ClientSession() as session:
+            search_tasks = []
+            
+            if securecode:
+                params_code = {"sittingidentifier": securecode}
+                search_tasks.append(session.get(search_url, headers=headers, params=params_code))
+            
+            if email:
+                params_email = {"email": email}
+                search_tasks.append(session.get(search_url, headers=headers, params=params_email))
+            
+            # Execute all searches concurrently
+            responses = await asyncio.gather(*search_tasks, return_exceptions=True)
+            
+            # Process responses
+            for response in responses:
+                if isinstance(response, Exception):
+                    logger.error(f"Search failed: {str(response)}")
+                    continue
+                    
+                response.raise_for_status()
+                photo_data = await response.json()
+                
+                # Add unique photos to our collection
+                if "data" in photo_data and "PhotoSubjects" in photo_data["data"]:
+                    for photo in photo_data["data"]["PhotoSubjects"]:
+                        sitting_id = photo.get('SittingIdentifier')
+                        if sitting_id and sitting_id not in unique_photos:
+                            unique_photos[sitting_id] = photo
+        
+        # Format response similar to original API response
+        return {
+            "data": {
+                "PhotoSubjects": list(unique_photos.values())
+            }
+        }
+                
+    except Exception as e:
+        logger.error(f"Failed to get photos: {str(e)}")
+        raise
+
 @app.route('/', methods=['GET'])
 def health_check():
     return jsonify({
@@ -202,20 +278,21 @@ async def zendesk_webhook():
         else:
             data['store'] = None
 
-        # Only fetch photo data if both store and secure code are present
-        if data.get('store') and data.get('securecode'):
+        # Only fetch photo data if store and either secure code or email are present
+        if data.get('store') and (data.get('securecode') or data.get('email')):
             try:
-                photo_subjects = await get_by_secure_code(
+                photo_subjects = await get_photos(
                     data['store'],
-                    data['securecode']
+                    securecode=data.get('securecode'),
+                    email=data.get('email')
                 )
                 data['photo_data'] = photo_subjects
-                logger.info(f"Retrieved photo data for store {data['store']} and securecode {data['securecode']}")
-                
+                logger.info(f"Retrieved photo data for store {data['store']}")
+
                 # Update Zendesk ticket with photo data
                 if data.get('ticketid') and data['photo_data']:
                     await update_zendesk_ticket(data['ticketid'], data['photo_data'])
-                
+
             except Exception as e:
                 logger.error(f"Error retrieving photo data: {str(e)}")
                 data['photo_data_error'] = str(e)
