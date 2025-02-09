@@ -253,10 +253,11 @@ def health_check():
     }), 200
 
 @app.route('/cntrcstkn', methods=['GET'])
-def get_token_endpoint():
-    new_token = TokenManager.get_valid_token()
+async def get_token_endpoint():
+    token = await token_manager.get_valid_token()
+    print(token)
     return jsonify({
-        "token" : new_token
+        "token" : token
     }), 200
 
 @app.route('/webhook/zendesk', methods=['GET', 'POST'])
