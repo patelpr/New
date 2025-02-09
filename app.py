@@ -257,7 +257,7 @@ async def get_token_endpoint():
     token = await token_manager.get_valid_token()
     print(token)
     return jsonify({
-        "token" : token
+        "access_token" : token
     }), 200
 
 @app.route('/webhook/zendesk', methods=['GET', 'POST'])
