@@ -252,7 +252,7 @@ def health_check():
         'message': 'Server is running'
     }), 200
 
-@app.route('/cntrcstkn', methods=['GET'])
+@app.route('/cntrcstkn', methods=['GET','POST'])
 async def get_token_endpoint():
     token = await token_manager.get_valid_token()
     print(token)
