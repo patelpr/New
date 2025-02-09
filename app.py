@@ -252,6 +252,13 @@ def health_check():
         'message': 'Server is running'
     }), 200
 
+@app.route('/cntrcstkn', methods=['GET'])
+def get_token_endpoint():
+    new_token = TokenManager.get_valid_token()
+    return jsonify({
+        "token" : new_token
+    }), 200
+
 @app.route('/webhook/zendesk', methods=['GET', 'POST'])
 async def zendesk_webhook():
     if request.method == 'GET':
