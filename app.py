@@ -119,6 +119,36 @@ async def format_gallery(photo_data):
 
     gallery_html += "</div>"
     return gallery_html
+async def flatten_photo_data(photo_data):
+    """Flatten the photo data to a single array of image objects."""
+    flat_photos = []
+    
+    if not photo_data or "data" not in photo_data or "PhotoSubjects" not in photo_data["data"]:
+        return []
+
+    for subject in photo_data["data"]["PhotoSubjects"]:
+        claim_url = subject.get("ClaimUrl", "")
+        create_date = subject.get("CreateDate", "")
+        partner_id = subject.get("PartnerID", "")
+        photo_subject_id = subject.get("PhotoSubjectID", "")
+        sitting_identifier = subject.get("SittingIdentifier", "")
+
+        for picture in subject.get("Pictures", []):
+            flat_photos.append({
+                "ClaimUrl": claim_url,
+                "CreateDate": create_date,
+                "PartnerID": partner_id,
+                "PhotoSubjectID": photo_subject_id,
+                "SittingIdentifier": sitting_identifier,
+                "ThumbnailURL": picture.get("ThumbnailURL", ""),
+                "ScreenURL": picture.get("ScreenURL", ""),
+                "PictureKey": picture.get("PictureKey", ""),
+                "OriginalURL": picture.get("OriginalURL", ""),
+                "GroupKey": picture.get("GroupKey", ""),
+            })
+
+    return flat_photos
+
 
 async def update_zendesk_ticket(ticket_id, photo_data):
     """Update Zendesk ticket with formatted gallery"""
@@ -132,6 +162,7 @@ async def update_zendesk_ticket(ticket_id, photo_data):
         return await zendesk.update_ticket(ticket_id, {"ticket": {"comment": {"public": False, "html_body": html_content}}})
     except Exception as e:
         logger.error(f"Error updating Zendesk ticket {ticket_id}: {e}")
+        
 
 @app.route('/search', methods=['GET'])
 async def search_photos_route():
@@ -144,11 +175,22 @@ async def search_photos_route():
         return jsonify({"status": "error", "message": "Provide securecode or email"}), 400
 
     try:
-        photo_data = await (search_photos(partner_id, securecode, email) if partner_id else search_all_partners(securecode, email))
-        return jsonify({"status": "success", "results_count": len(photo_data["data"]["PhotoSubjects"]), "results": photo_data}), 200
+        # Get the photo data (nested)
+        raw_photo_data = await (search_photos(partner_id, securecode, email) if partner_id else search_all_partners(securecode, email))
+
+        # Flatten the data
+        flat_results = await flatten_photo_data(raw_photo_data)
+
+        return jsonify({
+            "status": "success",
+            "results_count": len(flat_results),
+            "results": flat_results
+        }), 200
     except Exception as e:
         logger.error(f"Error in search: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
+
+
 
 @app.route('/webhook/zendesk', methods=['POST'])
 async def zendesk_webhook():
