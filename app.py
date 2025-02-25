@@ -132,8 +132,13 @@ async def flatten_photo_data(photo_data):
         partner_id = subject.get("PartnerID", "")
         photo_subject_id = subject.get("PhotoSubjectID", "")
         sitting_identifier = subject.get("SittingIdentifier", "")
+ 
 
         for picture in subject.get("Pictures", []):
+            purchase_flag = 0
+            ts = int(urllib.parse.parse_qs(urllib.parse.urlparse(picture.get("OriginalURL", "")).query).get("ts", [0])[0])
+            if ts > 0:
+                purchase_flag = 1
             flat_photos.append({
                 "ClaimUrl": claim_url,
                 "CreateDate": create_date,
@@ -145,6 +150,7 @@ async def flatten_photo_data(photo_data):
                 "PictureKey": picture.get("PictureKey", ""),
                 "OriginalURL": picture.get("OriginalURL", ""),
                 "GroupKey": picture.get("GroupKey", ""),
+                "Paid" : purchase_flag,
             })
 
     return flat_photos
