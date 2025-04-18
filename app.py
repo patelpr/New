@@ -216,12 +216,16 @@ def make_video():
             temp_img.write(img_response.content)
             temp_img_path = temp_img.name
 
-        video_blob = inject_image_to_video("video.mp4", temp_img_path, start, duration)
+        # 🔥 Updated path resolution
+        video_path = os.path.join(os.path.dirname(__file__), "Video.mp4")
+        video_blob = inject_image_to_video(video_path, temp_img_path, start, duration)
+
         return send_file(video_blob, mimetype='video/mp4', as_attachment=False, download_name="result.mp4")
 
     except Exception as e:
         logger.error(f"Server error: {e}")
         return abort(500, description="Unexpected server error.")
+
 
 @app.route('/search', methods=['GET'])
 async def search_photos_route():
