@@ -174,8 +174,6 @@ async def update_zendesk_ticket(ticket_id, photo_data):
 # Video injection
 def inject_image_to_video(video_path, image_path, start_time, duration):
     video = VideoFileClip(video_path)
-    img = Image.open(image_path)
-
     img_clip = ImageClip(image_path).set_duration(duration).resize(height=video.h).set_position("center")
     overlay = img_clip.set_start(start_time)
 
@@ -183,11 +181,21 @@ def inject_image_to_video(video_path, image_path, start_time, duration):
 
     buffer = io.BytesIO()
     with NamedTemporaryFile(delete=False, suffix=".mp4") as temp_file:
-        final.write_videofile(temp_file.name, codec="libx264", audio_codec="aac", verbose=False, logger=None)
+        final.write_videofile(
+            temp_file.name,
+            codec="libx264",
+            audio=False,              # ✅ Disable audio (saves RAM)
+            preset="ultrafast",       # ✅ Fast and low-memory
+            threads=1,                # ✅ Use one thread
+            bitrate="500k",           # ✅ Compress more
+            verbose=False,
+            logger=None
+        )
         temp_file.seek(0)
         buffer.write(temp_file.read())
         buffer.seek(0)
     return buffer
+
 
 # Routes
 @app.route('/makevideo')
