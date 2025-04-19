@@ -8,7 +8,7 @@ import urllib.parse
 from datetime import datetime, timedelta
 from tempfile import NamedTemporaryFile
 from flask import Flask, request, send_file, abort, jsonify
-from moviepy.editor import VideoFileClip, ImageClip, CompositeVideoClip
+from moviepy.editor import VideoFileClip, ImageClip, AudioFileClip, concatenate_videoclips
 from PIL import Image
 import aiohttp
 
@@ -171,29 +171,42 @@ async def update_zendesk_ticket(ticket_id, photo_data):
     except Exception as e:
         logger.error(f"Error updating Zendesk ticket {ticket_id}: {e}")
 
-# Video injection
-def inject_image_to_video(video_path, image_path, start_time, duration):
-    video = VideoFileClip(video_path)
-    img_clip = ImageClip(image_path).set_duration(duration).resize(height=video.h).set_position("center")
-    overlay = img_clip.set_start(start_time)
+def create_final_video(starting_path, ending_path, image_path, audio_path, overlay_duration=3.8):
+    # Load clips
+    starting = VideoFileClip(starting_path)
+    ending = VideoFileClip(ending_path)
 
-    final = CompositeVideoClip([video, overlay]).set_duration(video.duration)
+    # Create middle white clip with image overlay
+    middle = ImageClip(image_path)\
+        .set_duration(overlay_duration)\
+        .resize(height=starting.h)\
+        .set_position("center")\
+        .on_color(size=(starting.w, starting.h), color=(255, 255, 255), col_opacity=1.0)
 
+    # Stitch video
+    final = concatenate_videoclips([starting, middle, ending])
+
+    # Attach audio to whole video
+    audio = AudioFileClip(audio_path).set_duration(final.duration)
+    final = final.set_audio(audio)
+
+    # Write to buffer
     buffer = io.BytesIO()
     with NamedTemporaryFile(delete=False, suffix=".mp4") as temp_file:
         final.write_videofile(
             temp_file.name,
             codec="libx264",
-            audio=False,              # ✅ Disable audio (saves RAM)
-            preset="ultrafast",       # ✅ Fast and low-memory
-            threads=1,                # ✅ Use one thread
-            bitrate="500k",           # ✅ Compress more
+            audio_codec="aac",
+            preset="medium",
+            bitrate="1500k",
+            threads=1,
             verbose=False,
             logger=None
         )
         temp_file.seek(0)
         buffer.write(temp_file.read())
         buffer.seek(0)
+
     return buffer
 
 
@@ -202,7 +215,6 @@ def inject_image_to_video(video_path, image_path, start_time, duration):
 def make_video():
     securecode = request.args.get("securecode")
     partnerid = request.args.get("partnerid")
-    start = float(request.args.get("start", 4.7))
     duration = float(request.args.get("duration", 3.8))
 
     if not (securecode and partnerid):
@@ -224,15 +236,20 @@ def make_video():
             temp_img.write(img_response.content)
             temp_img_path = temp_img.name
 
-        # 🔥 Updated path resolution
-        video_path = os.path.join(os.path.dirname(__file__), "Video.mp4")
-        video_blob = inject_image_to_video(video_path, temp_img_path, start, duration)
+        video_blob = create_final_video(
+            starting_path=os.path.join(os.path.dirname(__file__), "Starting.mp4"),
+            ending_path=os.path.join(os.path.dirname(__file__), "Ending.mp4"),
+            image_path=temp_img_path,
+            audio_path=os.path.join(os.path.dirname(__file__), "EA25Audio.mp3"),
+            overlay_duration=duration
+        )
 
-        return send_file(video_blob, mimetype='video/mp4', as_attachment=False, download_name="result.mp4")
+        return send_file(video_blob, mimetype='video/mp4', as_attachment=False, download_name=securecode+"_Digital_Video.mp4")
 
     except Exception as e:
         logger.error(f"Server error: {e}")
         return abort(500, description="Unexpected server error.")
+
 
 
 @app.route('/search', methods=['GET'])
