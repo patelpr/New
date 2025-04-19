@@ -198,7 +198,7 @@ def create_final_video(starting_path, ending_path, image_path, audio_path, overl
             codec="libx264",
             audio_codec="aac",
             preset="medium",
-            bitrate="1500k",
+            bitrate="800k",
             threads=1,
             verbose=False,
             logger=None
